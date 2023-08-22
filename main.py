@@ -202,6 +202,6 @@ omniendpoint.listen(OmniFactory())
 httpendpoint = endpoints.TCP4ServerEndpoint(reactor, 8079)
 httpendpoint.listen(Site(http.resource()))
 
-print("Listening for lock and http traffic")
+print("Listening for lock and http traffic\n")
 
 reactor.run()
