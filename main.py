@@ -6,6 +6,7 @@ from twisted.protocols.basic import LineReceiver
 from twisted.web.server import Site
 
 from omni_packet import Command, Response
+from src.backend_http_connector import send_to_backend
 from receive_packets import Q0Packet, W0Packet, D0Packet, H0Packet, L0Packet, L1Packet, S5Packet, S8Packet, M0Packet, U0Packet
 
 lock_not_connected_message = "No packet received from lock since program is running"
@@ -56,6 +57,7 @@ class OmniProtocol(LineReceiver):
                 packet = "Lock command " + command + " not implemented"
                 print(data_array)
             print(packet)
+            send_to_backend(packet)
         else:
             print("Unknown data received: " + data_array[0])
 
