@@ -1,28 +1,24 @@
-name: Docker
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+name: 'build omni lock adapter'
 
 on:
   push:
     branches: [ "main" ]
-    # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
+    paths:
+      - 'Dockerfile'
+      - '.github/workflows/docker-publish.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'Dockerfile'
+      - '.github/workflows/docker-publish.yml'
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
-
 jobs:
-  build:
-
+  workflow:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,6 +28,12 @@ jobs:
       id-token: write
 
     steps:
+      - name: Owner/Repository to lower
+        id: ownerrepo
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ github.repository }}
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -39,9 +41,9 @@ jobs:
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 #v3.1.1
+        uses: sigstore/cosign-installer@f3c664df7af409cb4873aa5068053ba9d61a57b6 #v2.6.0
         with:
-          cosign-release: 'v2.1.1'
+          cosign-release: 'v1.13.1'
 
       # Workaround: https://github.com/docker/build-push-action/issues/461
       - name: Setup Docker buildx
@@ -71,13 +73,14 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
+          file: ./Dockerfile
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: 'latest'
+          tags: latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
+          platforms: linux/amd64,linux/arm64,linux/arm
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
@@ -87,9 +90,7 @@ jobs:
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
         env:
-          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+          COSIGN_EXPERIMENTAL: "true"
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
