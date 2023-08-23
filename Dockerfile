@@ -1,4 +1,5 @@
 FROM python:3.11-alpine
+LABEL org.opencontainers.image.source="https://github.com/retch/shareabike-omni-lock-adapter"
 
 ENV PYTHONUNBUFFERED 1
 WORKDIR /app
