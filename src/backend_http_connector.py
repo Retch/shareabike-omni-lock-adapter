@@ -7,7 +7,7 @@ url = os.environ.get("BACKEND_HOST_URL", "http://127.0.0.1")
 
 def send_to_backend(packet):
     print(type(packet))
-    data = {'time': packet.time}
+    data = {}
 
     if isinstance(packet, (Q0Packet, H0Packet, S5Packet)):
         data['voltage'] = packet.voltage
@@ -23,13 +23,14 @@ def send_to_backend(packet):
         data['event'] = packet.event
 
     if isinstance(packet, D0Packet):
-        data['latitudeDegrees'] = packet.dm.latitude_d
-        data['longitudeDegrees'] = packet.dm.longitude_d
-        data['latitudeHemisphere'] = packet.dm.latitude_hemi
-        data['longitudeHemisphere'] = packet.dm.longitude_hemi
-        data['altitude'] = packet.altitude
-        data['satellites'] = packet.satellites
-        data['hdop'] = packet.hdop
+        if packet.is_location_provided:
+            data['latitudeDegrees'] = packet.dm.latitude_d
+            data['longitudeDegrees'] = packet.dm.longitude_d
+            data['latitudeHemisphere'] = packet.dm.latitude_hemi
+            data['longitudeHemisphere'] = packet.dm.longitude_hemi
+            data['altitude'] = packet.altitude
+            data['satellites'] = packet.satellites
+            data['hdop'] = packet.hdop
 
     if isinstance(packet, L1Packet):
         data['isLocked'] = True
