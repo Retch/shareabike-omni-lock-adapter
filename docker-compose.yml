@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  adapter:
+    image: ghcr.io/retch/shareabike-omni-lock-adapter:latest
+    container_name: adapter
+    restart: unless-stopped
+    environment:
+      - BACKEND_HOST_URL=http://example.com
+    ports:
+      - "8079:8079"
+      - "9679:9679"
