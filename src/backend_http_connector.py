@@ -31,6 +31,8 @@ def send_to_backend(packet):
             data['altitude'] = packet.altitude
             data['satellites'] = packet.satellites
             data['hdop'] = packet.hdop
+        else:
+            data['noGps'] = True
 
     if isinstance(packet, L1Packet):
         data['isLocked'] = True
