@@ -7,7 +7,7 @@ url = os.environ.get("BACKEND_HOST_URL", "http://127.0.0.1")
 
 def send_to_backend(packet):
     print(type(packet))
-    data = {}
+    data = {'packetType': type(packet).__name__}
 
     if isinstance(packet, (Q0Packet, H0Packet, S5Packet)):
         data['voltage'] = packet.voltage
