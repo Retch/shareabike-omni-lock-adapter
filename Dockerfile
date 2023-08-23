@@ -10,3 +10,4 @@ RUN pip install -r requirements.txt
 EXPOSE 9679
 EXPOSE 8079
 CMD ["python", "main.py"]
+STOPSIGNAL SIGKILL
