@@ -1,6 +1,6 @@
 import os
 import requests
-from receive_packets import Q0Packet, W0Packet, D0Packet, H0Packet, L0Packet, L1Packet, S5Packet, S8Packet, M0Packet, U0Packet
+from src.receive_packets import Q0Packet, W0Packet, D0Packet, H0Packet, L0Packet, L1Packet, S5Packet, S8Packet, M0Packet, U0Packet
 
 url = os.environ.get("BACKEND_HOST_URL", "http://127.0.0.1")
 
