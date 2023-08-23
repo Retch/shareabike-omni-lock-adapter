@@ -6,6 +6,7 @@ ENV PYTHONUNBUFFERED 1
 ENV BACKEND_HOST_URL http://127.0.0.1
 WORKDIR /app
 COPY helper_types.py omni_packet.py receive_packets.py main.py requirements.txt /app/
+COPY src /app/src
 RUN pip install -r requirements.txt
 EXPOSE 9679
 EXPOSE 8079
