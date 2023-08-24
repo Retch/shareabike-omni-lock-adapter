@@ -2,7 +2,9 @@ import os
 import requests
 from src.receive_packets import Q0Packet, W0Packet, D0Packet, H0Packet, L0Packet, L1Packet, S5Packet, S8Packet, M0Packet, U0Packet
 
-url = os.environ.get("BACKEND_HOST_URL", "http://127.0.0.1")
+url = os.environ.get("BACKEND_HOST_URL", "")
+username = os.environ.get("BACKEND_USERNAME", "")
+password = os.environ.get("BACKEND_PASSWORD", "")
 
 
 def send_to_backend(packet):
@@ -57,7 +59,7 @@ def send_to_backend(packet):
         data['lockSwDate'] = packet.lock_sw_date
         data['lockHwRevision'] = packet.lock_hw_revision
 
-    response = requests.post(url + "/adapter/" + packet.imei + "/updatestatus", json=data)
+    response = requests.post(url + "/adapter/" + packet.imei + "/updatestatus", json=data, auth=(username, password))
 
     if response.status_code == 200:
         print('Package was forwarded to backend')

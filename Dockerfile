@@ -4,6 +4,8 @@ LABEL org.opencontainers.image.source="https://github.com/retch/shareabike-omni-
 ENV PYTHONUNBUFFERED 1
 
 ENV BACKEND_HOST_URL http://127.0.0.1
+ENV BACKEND_USERNAME "adapter"
+ENV BACKEND_PASSWORD "password"
 WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install -r requirements.txt
