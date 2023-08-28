@@ -54,8 +54,9 @@ class OmniProtocol(LineReceiver):
                 packet = L0Packet(data_array)
                 self.send_basic_response(command)
             else:
-                packet = "Lock command " + command + " not implemented"
+                packet = "Lock command " + command + " not implemented " + datetime.now()
                 print(data_array)
+                print(datetime.now())
             print(packet)
             send_to_backend(packet)
         else:
