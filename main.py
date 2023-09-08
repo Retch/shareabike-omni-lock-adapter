@@ -60,6 +60,8 @@ class OmniProtocol(LineReceiver):
             print(packet)
             if not isinstance(packet, str):
                 send_to_backend(packet)
+            else:
+                print("\n")
         else:
             print("Unknown data received: " + data_array[0])
 
