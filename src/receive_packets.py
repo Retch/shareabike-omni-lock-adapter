@@ -134,3 +134,11 @@ class U0Packet(Packet):
 
     def __str__(self):
         return "U0 - Version info packet\n" + "Software version: " + self.lock_sw_version + f"({self.lock_sw_date})\n" + "Hardware revision: " + self.lock_hw_revision + "\n"
+
+class C0Packet(Packet):
+    def __init__(self, data):
+        super().__init__(data)
+        self.locked = bool(int(data[5]))  # 0 = unlocked
+        self.lock_biked_number = data[7]
+    def __str__(self):
+        return "C0 - RFID Biked unlock request packet\n" + "Locked: " + str(self.locked) + "\nBiked number: " + self.lock_biked_number + "\n"

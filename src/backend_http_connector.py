@@ -1,6 +1,6 @@
 import os
 import requests
-from src.receive_packets import Q0Packet, W0Packet, D0Packet, H0Packet, L0Packet, L1Packet, S5Packet, S8Packet, M0Packet, U0Packet
+from src.receive_packets import Q0Packet, W0Packet, D0Packet, H0Packet, L0Packet, L1Packet, S5Packet, S8Packet, M0Packet, U0Packet, C0Packet
 
 url = os.environ.get("BACKEND_HOST_URL", "")
 username = os.environ.get("BACKEND_USERNAME", "")
@@ -46,6 +46,9 @@ def send_to_backend(packet):
             data['isLocked'] = False
         data['userId'] = packet.user_id
         data['timeStamp'] = packet.timestamp
+
+    if isinstance(packet, C0Packet):
+        data['isLocked'] = packet.locked
 
     if isinstance(packet, S8Packet):
         data['wasRingRequestReceived'] = True
