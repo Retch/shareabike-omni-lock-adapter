@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 from src.helper_types import LocationDM
 
 
@@ -130,10 +131,10 @@ class U0Packet(Packet):
         super().__init__(data)
         self.lock_sw_version = data[5]
         self.lock_hw_revision = data[6]
-        self.lock_sw_date = data[7]
+        self.lock_sw_date = datetime.strptime(data[7], "%b %d %Y").timestamp()
 
     def __str__(self):
-        return "U0 - Version info packet\n" + "Software version: " + self.lock_sw_version + f"({self.lock_sw_date})\n" + "Hardware revision: " + self.lock_hw_revision + "\n"
+        return "U0 - Version info packet\n" + "Software version: " + self.lock_sw_version + f" ({self.lock_sw_date})\n" + "Hardware revision: " + self.lock_hw_revision + "\n"
 
 class C0Packet(Packet):
     def __init__(self, data):
