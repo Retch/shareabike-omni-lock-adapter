@@ -131,7 +131,7 @@ class U0Packet(Packet):
         super().__init__(data)
         self.lock_sw_version = data[5]
         self.lock_hw_revision = data[6]
-        self.lock_sw_date = datetime.strptime(data[7], "%b %d %Y").timestamp()
+        self.lock_sw_date = int(datetime.strptime(data[7], "%b %d %Y").timestamp())
 
     def __str__(self):
         return "U0 - Version info packet\n" + "Software version: " + self.lock_sw_version + f" ({self.lock_sw_date})\n" + "Hardware revision: " + self.lock_hw_revision + "\n"
