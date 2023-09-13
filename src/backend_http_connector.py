@@ -1,6 +1,6 @@
 import os
 import requests
-from src.receive_packets import Q0Packet, W0Packet, D0Packet, H0Packet, L0Packet, L1Packet, S5Packet, S8Packet, M0Packet, U0Packet, C0Packet
+from src.receive_packets import Q0Packet, W0Packet, D0Packet, H0Packet, L0Packet, L1Packet, S5Packet, S8Packet, M0Packet, U0Packet, C0Packet, I0Packet
 
 url = os.environ.get("BACKEND_HOST_URL", "")
 username = os.environ.get("BACKEND_USERNAME", "")
@@ -49,6 +49,7 @@ def send_to_backend(packet):
 
     if isinstance(packet, C0Packet):
         data['isLocked'] = packet.locked
+        data['lockBikedNumber'] = packet.lock_biked_number
 
     if isinstance(packet, S8Packet):
         data['wasRingRequestReceived'] = True
@@ -61,6 +62,9 @@ def send_to_backend(packet):
         data['lockSwVersion'] = packet.lock_sw_version
         data['lockSwDate'] = packet.lock_sw_date
         data['lockHwRevision'] = packet.lock_hw_revision
+
+    if isinstance(packet, I0Packet):
+        data['simIccid'] = packet.sim_iccid
 
     response = requests.post(url + "/adapter/" + packet.imei + "/updatestatus", json=data, auth=(username, password))
 
