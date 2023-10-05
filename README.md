@@ -13,7 +13,7 @@ Status codes:
 ### Ask lock for general information update
 ##### Request
 ```bash
-curl --location 'http://http://[ADAPTER_HOST]/[IMEI]/info'
+curl --location 'http://[ADAPTER_HOST]/[IMEI]/info'
 ```
 ##### Response
 Status codes:
@@ -22,7 +22,7 @@ Status codes:
 ### Ask lock for position update
 ##### Request
 ```bash
-curl --location 'http://http://[ADAPTER_HOST]/[IMEI]/position'
+curl --location 'http://[ADAPTER_HOST]/[IMEI]/position'
 ```
 ##### Response
 Status codes:
@@ -31,7 +31,7 @@ Status codes:
 ### Unlock lock
 ##### Request
 ```bash
-curl --location 'http://http://[ADAPTER_HOST]/[IMEI]/unlock'
+curl --location 'http://[ADAPTER_HOST]/[IMEI]/unlock'
 ```
 ##### Response
 Status codes:
@@ -40,7 +40,7 @@ Status codes:
 ### Ring lock (beep)
 ##### Request
 ```bash
-curl --location 'http://http://[ADAPTER_HOST]/[IMEI]/ring/[AMOUNT]'
+curl --location 'http://[ADAPTER_HOST]/[IMEI]/ring/[AMOUNT]'
 ```
 ##### Response
 Status codes:
